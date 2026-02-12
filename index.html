@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusForge | Smart Productivity</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons (Phosphor Icons or FontAwesome - using Phosphor for clean look) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="ph ph-lightning"></i>
+                <span>FocusForge</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="active" data-section="dashboard">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li data-section="tasks">
+                    <i class="ph ph-check-circle"></i>
+                    <span>Tasks</span>
+                </li>
+                <li data-section="habits">
+                    <i class="ph ph-fire"></i>
+                    <span>Habits</span>
+                </li>
+                <li data-section="stats">
+                    <i class="ph ph-chart-bar"></i>
+                    <span>Stats</span>
+                </li>
+            </ul>
+
+            <div class="theme-toggle">
+                <i class="ph ph-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1 id="page-title">Dashboard</h1>
+                <div class="user-profile">
+                    <div class="date-display" id="date-display"></div>
+                    <div class="avatar">S</div>
+                </div>
+            </header>
+
+            <!-- Sections Container -->
+            <div id="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="welcome-card">
+                        <h2>Welcome back, Student! 👋</h2>
+                        <p>Let's forge your path to success today.</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Key Metrics Row -->
+                        <div class="metric-card total">
+                            <div class="metric-icon"><i class="ph ph-stack"></i></div>
+                            <div class="metric-content">
+                                <h3>Total Tasks</h3>
+                                <p id="dash-total">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card completed">
+                            <div class="metric-icon"><i class="ph ph-check-circle"></i></div>
+                            <div class="metric-content">
+                                <h3>Completed</h3>
+                                <p id="dash-completed">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card pending">
+                            <div class="metric-icon"><i class="ph ph-hourglass"></i></div>
+                            <div class="metric-content">
+                                <h3>Pending</h3>
+                                <p id="dash-pending">0</p>
+                            </div>
+                        </div>
+                        <div class="metric-card habit-stat">
+                            <div class="metric-icon"><i class="ph ph-fire"></i></div>
+                            <div class="metric-content">
+                                <h3>Active Habits</h3>
+                                <p id="dash-habits-count">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Productivity Score Section (Spans 2 cols on wide screens) -->
+                        <div class="productivity-card">
+                            <div class="prod-header">
+                                <h3>Daily Productivity Score</h3>
+                                <p class="text-secondary">Based on your tasks & habits completion today.</p>
+                            </div>
+                            <div class="score-display">
+                                <div class="circular-chart" id="productivity-ring" style="--percent: 0">
+                                    <div class="inner-circle">
+                                        <span id="dash-score">0%</span>
+                                    </div>
+                                </div>
+                                <div class="score-details">
+                                    <p>You're doing great!</p>
+                                    <span class="text-sm">Keep up the momentum to reach 100%.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tasks Section -->
+                <section id="tasks" class="content-section">
+                    <div class="tasks-layout">
+                        <div class="tasks-main">
+                            <div class="section-header">
+                                <h2>My Tasks</h2>
+                                <button class="btn-primary" id="add-task-btn">
+                                    <i class="ph ph-plus"></i> Add New Task
+                                </button>
+                            </div>
+                            <div class="task-filters">
+                                <span class="filter-label">Status:</span>
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="active">Active</button>
+                                <button class="filter-btn" data-filter="completed">Completed</button>
+                                <div class="filter-separator"></div>
+                                <span class="filter-label">Priority:</span>
+                                <button class="filter-btn" data-priority="high">High</button>
+                                <button class="filter-btn" data-priority="medium">Medium</button>
+                                <button class="filter-btn" data-priority="low">Low</button>
+                            </div>
+                            <div class="task-list" id="task-list">
+                                <!-- Tasks will be injected here -->
+                                <div class="empty-state">
+                                    <p>No tasks yet. Start by adding one!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Deadlines Sidebar -->
+                        <div class="tasks-sidebar">
+                            <h3><i class="ph ph-clock"></i> Upcoming Deadlines</h3>
+                            <div class="upcoming-list" id="upcoming-list">
+                                <!-- Upcoming tasks injected here -->
+                                <p class="text-sm text-secondary">No upcoming deadlines.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Habits Section -->
+                <section id="habits" class="content-section">
+                    <div class="section-header">
+                        <h2>Habit Tracker</h2>
+                        <button class="btn-primary" id="add-habit-btn">
+                            <i class="ph ph-plus"></i> New Habit
+                        </button>
+                    </div>
+                    <div class="habit-grid" id="habit-grid">
+                        <!-- Habits will be injected here -->
+                        <div class="empty-state">
+                            <p>No habits tracked yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stats Section -->
+                <section id="stats" class="content-section">
+                    <h2>Your Progress</h2>
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3>Weekly Completion</h3>
+                            <div class="mock-chart">
+                                <!-- Placeholder for chart -->
+                                <div class="bar" style="height: 40%"></div>
+                                <div class="bar" style="height: 70%"></div>
+                                <div class="bar" style="height: 50%"></div>
+                                <div class="bar" style="height: 90%"></div>
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 30%"></div>
+                                <div class="bar" style="height: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Add New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label>Task Title</label>
+                    <input type="text" id="task-input" required placeholder="E.g., Complete Math Assignment">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="task-subject">
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="History">History</option>
+                            <option value="Literature">Literature</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="date" id="task-date" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Habit Modal -->
+    <div id="habit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New Habit</h2>
+            <form id="habit-form">
+                <div class="form-group">
+                    <label>Habit Name</label>
+                    <input type="text" id="habit-input" required placeholder="E.g., Read 30 mins">
+                </div>
+                <button type="submit" class="btn-primary">Start Tracking</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
